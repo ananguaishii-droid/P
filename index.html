@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>การใช้ไมโครมิเตอร์และประโยชน์ของไมโครมิเตอร์</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0e2b3d;--panel:#143a52;--ink:#eaf5fb;--mute:#9cc0d4;--line:#5f93b0;--acc:#ffc93c;--steel:#c9d6de;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:dark}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e2b3d}}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#e9f2f7;--panel:#d5e6ef;--ink:#0e2b3d;--mute:#3f6b84;--line:#4d7f9a;--acc:#b86b00;--steel:#8fa3b0;color-scheme:light}}
+:root[data-theme="light"]{--bg:#e9f2f7;--panel:#d5e6ef;--ink:#0e2b3d;--mute:#3f6b84;--line:#4d7f9a;--acc:#b86b00;--steel:#8fa3b0;color-scheme:light}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font-family:"Noto Sans Thai","Sarabun",Tahoma,sans-serif;line-height:1.6}
+body{background-image:linear-gradient(var(--panel) 1px,transparent 1px),linear-gradient(90deg,var(--panel) 1px,transparent 1px);background-size:32px 32px;background-attachment:fixed}
+main{max-width:980px;margin:0 auto;padding:16px 16px 120px}
+section{display:none;min-height:60vh}
+section.on{display:block;animation:in .5s ease}
+@keyframes in{from{opacity:0}to{opacity:1}}
+h1{font-size:clamp(28px,6vw,52px);line-height:1.2;margin:8px 0 12px;font-weight:800}
+h2{font-size:clamp(22px,4.5vw,34px);margin:8px 0 12px;font-weight:800}
+p{margin:0 0 12px;color:var(--mute);font-size:clamp(16px,2.4vw,19px);max-width:62ch}
+svg{width:100%;height:auto;display:block}
+.fig{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:8px;margin:12px 0}
+.lbl{fill:var(--ink);font-size:15px;font-family:inherit}
+.ln{stroke:var(--line);stroke-width:1.2}
+.steel{fill:var(--steel);stroke:var(--line)}
+ol.steps{list-style:none;counter-reset:s;padding:0;margin:12px 0;display:grid;gap:8px}
+ol.steps li{counter-increment:s;border-left:4px solid var(--acc);padding:6px 12px;background:var(--panel);font-size:clamp(15px,2.3vw,18px)}
+ol.steps li::before{content:counter(s) ". ";color:var(--acc);font-weight:800}
+.on ol.steps li{animation:rise .5s both}
+.on ol.steps li:nth-child(2){animation-delay:.25s}.on ol.steps li:nth-child(3){animation-delay:.5s}.on ol.steps li:nth-child(4){animation-delay:.75s}
+.on ol.steps li:nth-child(5){animation-delay:1s}.on ol.steps li:nth-child(6){animation-delay:1.25s}.on ol.steps li:nth-child(7){animation-delay:1.5s}.on ol.steps li:nth-child(8){animation-delay:1.75s}
+@keyframes rise{from{opacity:0;transform:translateX(-12px)}to{opacity:1;transform:none}}
+.uses{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin-top:12px}
+.uses div{border:1px solid var(--line);background:var(--panel);padding:14px;font-weight:600}
+.read{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin:10px 0}
+.read div{background:var(--panel);border:1px solid var(--line);padding:10px;text-align:center;color:var(--mute);font-size:14px}
+.read b{display:block;font-size:26px;color:var(--ink)}
+.read .tot b{color:var(--acc)}
+input[type=range]{width:100%;accent-color:var(--acc);height:32px}
+button{font:inherit;background:var(--panel);color:var(--ink);border:1px solid var(--line);padding:8px 16px;border-radius:4px;cursor:pointer;min-height:44px}
+button:hover{border-color:var(--acc)}
+:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}.chips button[aria-pressed=true]{border-color:var(--acc);color:var(--acc);font-weight:600}.read b{overflow-wrap:anywhere}
+.tag{font-size:clamp(18px,3.5vw,26px);color:var(--acc);font-weight:800;margin-top:16px}
+nav{position:fixed;left:0;right:0;bottom:0;background:var(--bg);border-top:1px solid var(--line);padding:8px 16px calc(8px + env(safe-area-inset-bottom,0px))}
+.cap{max-width:980px;margin:0 auto 8px;font-size:14px;color:var(--ink);display:flex;gap:10px;align-items:flex-start}
+.cap span{flex:1;overflow-wrap:anywhere}
+.ctl{max-width:980px;margin:0 auto;display:flex;align-items:center;gap:8px}
+.dots{flex:1;display:flex;justify-content:center;gap:8px}
+.dots i{width:10px;height:10px;border-radius:50%;background:var(--line);opacity:.5}
+.dots i.on{background:var(--acc);opacity:1}
+@media (prefers-reduced-motion:reduce){section.on,.on ol.steps li{animation:none}}
+</style>
+</head>
+<body>
+<main>
+<section id="s0" class="on">
+<h1>ไมโครมิเตอร์: วัดความหนาให้ละเอียดถึง 0.01 มิลลิเมตร</h1>
+<p>เคยสงสัยไหมว่าเราจะวัดความหนาของลวด เหรียญ หรือแผ่นโลหะได้แม่นยำแค่ไหน วันนี้เรามารู้จักเครื่องมือวัดที่ละเอียดกว่าไม้บรรทัดหลายสิบเท่า</p>
+<div class="fig"><div class="m"></div></div>
+</section>
+
+<section id="s1">
+<h2>ไมโครมิเตอร์คืออะไร</h2>
+<p>เครื่องมือวัดละเอียดสำหรับวัดความหนา เส้นผ่านศูนย์กลาง และขนาดภายนอกของวัตถุ อ่านค่าได้ละเอียด 0.01 มม. (บางรุ่น 0.001 มม.)</p>
+<div class="fig"><div class="m" data-labels="1"></div></div>
+</section>
+
+<section id="s2">
+<h2>วิธีใช้ไมโครมิเตอร์</h2>
+<ol class="steps">
+<li>ทำความสะอาดผิวสัมผัสของปากวัดและแกนวัด</li>
+<li>หมุนปิดด้วย Ratchet แล้วตรวจค่าศูนย์ (Zero error) ถ้าไม่ชี้ 0 ให้จดค่าคลาดเคลื่อนไว้</li>
+<li>หมุนแกนวัดให้เปิดกว้างกว่าวัตถุเล็กน้อย</li>
+<li>วางวัตถุระหว่างปากวัดและแกนวัด</li>
+<li>หมุน Ratchet เบา ๆ จนได้ยินเสียงคลิก แล้วหยุดหมุน</li>
+<li>ล็อกแกนวัด เพื่อกันค่าเลื่อนขณะอ่าน</li>
+<li>อ่านค่าจากสเกลหลักและสเกลหมุน</li>
+<li>รวมค่าทั้งสอง แล้วบวกหรือลบค่าศูนย์ที่ตรวจไว้</li>
+</ol>
+</section>
+
+<section id="s3">
+<h2>ตัวอย่างการอ่านค่า: ลองหมุนเอง</h2>
+<p>เลื่อนแถบเพื่อหมุนสเกลหมุน สเกลหลักบนปลอกสเกลมีขีดบนทุก 1 มม. และขีดล่างคั่นทุก 0.5 มม.</p>
+<div class="fig"><svg id="rd" viewBox="0 0 620 200" role="img" aria-label="สเกลไมโครมิเตอร์"></svg></div>
+<input id="sl" type="range" min="0" max="2500" step="1" value="573" aria-label="หมุนสเกลหมุน">
+<div class="read">
+<div>สเกลหลัก<b id="a">5.50</b>มม.</div>
+<div>สเกลหมุน<b id="b">0.23</b>มม.</div>
+<div class="tot">ผลรวม<b id="c">5.73</b>มม.</div>
+</div>
+<p>ค่าที่วัดได้ = สเกลหลัก + สเกลหมุน → 5.50 + 0.23 = 5.73 มม. อย่าลืมตรวจค่าศูนย์ของเครื่องมือแต่ละรุ่นด้วย</p>
+<button id="ex">กลับไปตัวอย่าง 5.73 มม.</button>
+<button id="rn">สุ่มค่าใหม่</button>
+</section>
+
+<section id="s3b">
+<h2>ลองวัดของจริงหลายแบบ</h2>
+<p>เลือกวัตถุ ดูตำแหน่งที่วางระหว่างปากวัดกับแกนวัด แล้วอ่านค่าจากสเกลก่อนกดดูคำตอบ (ค่าเป็นตัวอย่างโดยประมาณ ของจริงแต่ละยี่ห้อและรุ่นอาจต่างเล็กน้อย)</p>
+<div id="ob" class="chips"></div>
+<div class="fig"><svg id="jw" viewBox="0 0 620 170" role="img" aria-label="วัตถุระหว่างปากวัดและแกนวัด"></svg></div>
+<p id="st" style="color:var(--acc);font-weight:600;margin:4px 0"></p>
+<input id="sp" type="range" min="0" max="300" step="1" value="300" aria-label="หมุนแกนวัดปิดเข้าหาวัตถุ">
+<p>เลื่อนแถบไปทางซ้ายเพื่อหมุนแกนวัดปิดเข้าหาวัตถุ สเกลด้านล่างจะหมุนตามทันที เมื่อแกนแตะวัตถุจะหยุดเอง เหมือนเสียงคลิกของ Ratchet</p>
+<div class="fig"><svg id="rd2" viewBox="0 0 620 200" role="img" aria-label="สเกลที่อ่านค่า"></svg></div>
+<div class="read"><div>วัตถุ<b id="on">-</b></div><div class="tot">ค่าที่วัดได้<b id="ov">?</b>มม.</div></div>
+<button id="rv" type="button">ดูคำตอบ</button>
+<p style="margin-top:12px">เคล็ดลับสายกีตาร์: วัดตรงส่วนที่เรียบของสาย ไม่วัดตรงปลายที่ม้วนพัน และหมุน Ratchet เบา ๆ เพื่อไม่ให้สายแบน</p>
+</section>
+
+<section id="s4">
+<h2>ประโยชน์ของไมโครมิเตอร์</h2>
+<div class="uses">
+<div>วัดชิ้นส่วนเครื่องจักร</div>
+<div>ตรวจสอบความหนาของวัสดุ</div>
+<div>วัดเส้นผ่านศูนย์กลางของลวด</div>
+<div>ควบคุมคุณภาพในโรงงาน</div>
+<div>ทดลองและเรียนรู้ในห้องปฏิบัติการ</div>
+</div>
+</section>
+
+<section id="s5">
+<h2>สรุป</h2>
+<p>ไมโครมิเตอร์ช่วยให้วัดขนาดวัตถุได้แม่นยำ ใช้ถูกวิธีจึงได้ผลที่เชื่อถือได้ ทั้งในห้องเรียนและงานอุตสาหกรรม</p>
+<div class="fig"><div class="m"></div></div>
+<div class="tag">ไมโครมิเตอร์: เครื่องมือวัดละเอียด เพื่อความแม่นยำ</div>
+</section>
+</main>
+
+<nav>
+<div class="cap"><span id="cap"></span><button id="tts" type="button">ฟังเสียงบรรยาย</button></div>
+<div class="ctl">
+<button id="pv" type="button">ก่อนหน้า</button>
+<div class="dots" id="dots"></div>
+<button id="nx" type="button">ถัดไป</button>
+</div>
+</nav>
+
+<script>
+var NAR=[
+"เคยสงสัยไหมว่า เราจะวัดความหนาของวัตถุขนาดเล็กได้อย่างแม่นยำได้อย่างไร วันนี้เราจะมาทำความรู้จักกับไมโครมิเตอร์ เครื่องมือวัดที่ช่วยให้เราวัดขนาดได้ละเอียดและแม่นยำ",
+"ไมโครมิเตอร์เป็นเครื่องมือวัดละเอียด ใช้วัดความหนา เส้นผ่านศูนย์กลาง หรือขนาดภายนอกของวัตถุ ประกอบด้วย โครงเครื่อง ปากวัด แกนวัด ปลอกสเกล สเกลหมุน ตัวล็อก และปุ่มวัดแรงคงที่ หรือ Ratchet โดยทั่วไปวัดได้ละเอียดถึง 0.01 มิลลิเมตร",
+"เริ่มจากทำความสะอาดผิวสัมผัส แล้วหมุนปิดเพื่อตรวจค่าศูนย์ จากนั้นเปิดแกนวัด วางวัตถุระหว่างปากวัดและแกนวัด หมุน Ratchet เบา ๆ จนได้ยินเสียงคลิก ล็อกแกนวัด แล้วอ่านค่าจากสเกลหลักและสเกลหมุนมารวมกัน",
+"ตัวอย่างนี้ สเกลหลักอ่านได้ 5.50 มิลลิเมตร สเกลหมุนอ่านได้ 0.23 มิลลิเมตร เมื่อรวมกันจะได้ 5.73 มิลลิเมตร ทั้งนี้ต้องตรวจสอบความละเอียดและค่าความคลาดเคลื่อนของเครื่องมือแต่ละรุ่นด้วย",
+"ลองเลือกวัตถุที่ต้องการวัด เช่น สายกีตาร์ ลวดทองแดง กระดาษ หรือปิ๊กกีตาร์ ดูวัตถุที่วางระหว่างปากวัดและแกนวัด แล้วลองเลื่อนแถบหมุนแกนวัดเข้าหาวัตถุด้วยตัวเอง อ่านค่าจากสเกลหลักและสเกลหมุนก่อนกดดูคำตอบ",
+"ไมโครมิเตอร์มีประโยชน์ในการวัดวัตถุที่ต้องการความละเอียดสูง ช่วยตรวจสอบคุณภาพของชิ้นงาน ลดความผิดพลาดในการผลิต และเป็นเครื่องมือสำคัญในงานวิศวกรรม งานอุตสาหกรรม และการทดลองทางวิทยาศาสตร์",
+"สรุปแล้ว ไมโครมิเตอร์เป็นเครื่องมือวัดละเอียดที่ช่วยให้เราวัดขนาดของวัตถุได้อย่างแม่นยำ ใช้งานอย่างถูกวิธีจะได้ผลการวัดที่น่าเชื่อถือ ไมโครมิเตอร์ เครื่องมือวัดละเอียด เพื่อความแม่นยำ"];
+
+function mic(lab){
+var t=function(x,y,s,a){return '<text class="lbl" x="'+x+'" y="'+y+'" text-anchor="'+(a||'middle')+'">'+s+'</text>'};
+var l=function(x1,y1,x2,y2){return '<line class="ln" x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'"/>'};
+var s='<svg viewBox="0 0 640 250" role="img" aria-label="ไมโครมิเตอร์แบบวัดภายนอก">'+
+'<path d="M130 150H85V70H340V135" fill="none" stroke="var(--steel)" stroke-width="14" stroke-linejoin="round"/>'+
+'<rect class="steel" x="120" y="138" width="22" height="24"/>'+
+'<rect x="220" y="146" width="125" height="8" fill="var(--ink)"/>'+
+'<rect class="steel" x="340" y="134" width="130" height="32"/>'+
+'<rect x="340" y="116" width="26" height="18" fill="var(--acc)"/>'+
+'<rect class="steel" x="470" y="126" width="90" height="48"/>'+
+'<g stroke="var(--line)">'+[480,490,500,510,520,530,540,550].map(function(x){return '<line x1="'+x+'" y1="128" x2="'+x+'" y2="172"/>'}).join('')+'</g>'+
+'<rect class="steel" x="560" y="136" width="44" height="28"/>'+
+'<line x1="345" y1="150" x2="468" y2="150" stroke="var(--line)" stroke-width="1.5"/>';
+if(lab){s+=t(210,50,'โครงเครื่อง (Frame)')+l(210,56,210,70)+
+t(131,205,'ปากวัด (Anvil)')+l(131,162,131,190)+
+t(285,205,'แกนวัด (Spindle)')+l(285,154,285,190)+
+t(405,235,'ปลอกสเกล (Sleeve)')+l(405,166,405,220)+
+t(515,205,'สเกลหมุน (Thimble)')+l(515,174,515,190)+
+t(353,90,'ตัวล็อก (Lock)')+l(353,95,353,116)+
+t(582,205,'Ratchet')+l(582,164,582,190)}
+return s+'</svg>'}
+document.querySelectorAll('.m').forEach(function(e){e.innerHTML=mic(e.dataset.labels)});
+
+var rd=document.getElementById('rd'),sl=document.getElementById('sl');
+function scale(rd,iv){
+var v=iv/100,n=iv%50,sv=(iv-n)/100,S=40,EX=380,o='';
+o+='<defs><clipPath id="cp'+rd.id+'"><rect x="0" y="30" width="'+EX+'" height="140"/></clipPath></defs>';
+o+='<rect x="0" y="40" width="'+EX+'" height="120" fill="var(--bg)" stroke="var(--line)"/>';
+o+='<g clip-path="url(#cp'+rd.id+')"><g transform="translate('+(EX-v*S)+' 0)" stroke="var(--ink)">';
+for(var m=0;m<=26;m++){o+='<line x1="'+m*S+'" y1="70" x2="'+m*S+'" y2="100"/><line x1="'+(m*S+S/2)+'" y1="100" x2="'+(m*S+S/2)+'" y2="120"/>';
+o+='<text x="'+m*S+'" y="62" fill="var(--ink)" stroke="none" font-size="13" text-anchor="middle">'+m+'</text>'}
+o+='</g></g><line x1="0" y1="100" x2="'+EX+'" y2="100" stroke="var(--acc)" stroke-width="2"/>';
+o+='<rect x="'+EX+'" y="30" width="230" height="140" fill="var(--steel)" fill-opacity=".35" stroke="var(--line)"/>';
+for(var i=n-8;i<=n+8;i++){var k=((i%50)+50)%50,y=100+(i-n)*8,hl=i===n;
+o+='<line x1="'+(EX+8)+'" y1="'+y+'" x2="'+(EX+(k%5?30:44))+'" y2="'+y+'" stroke="'+(hl?'var(--acc)':'var(--ink)')+'" stroke-width="'+(hl?3:1.2)+'"/>';
+if(k%5===0)o+='<text x="'+(EX+56)+'" y="'+(y+4)+'" fill="'+(hl?'var(--acc)':'var(--ink)')+'" font-size="13">'+k+'</text>'}
+o+='<line x1="'+EX+'" y1="30" x2="'+EX+'" y2="170" stroke="var(--ink)" stroke-width="2"/>';
+rd.innerHTML=o;return[sv,n/100,v]}
+function draw(){var r=scale(rd,+sl.value),sv=r[0],n=r[1]*100,v=r[2];
+document.getElementById('a').textContent=sv.toFixed(2);
+document.getElementById('b').textContent=(n/100).toFixed(2);
+document.getElementById('c').textContent=v.toFixed(2)}
+sl.oninput=draw;draw();
+document.getElementById('ex').onclick=function(){sl.value=573;draw()};
+document.getElementById('rn').onclick=function(){sl.value=Math.floor(Math.random()*2400)+50;draw()};
+
+var OBJ=[["เส้นผม",0.07,"r"],["กระดาษ A4",0.10,"s"],["สายกีตาร์ไฟฟ้าเส้น 1",0.23,"r"],["ปิ๊กกีตาร์",0.73,"s"],["ลวดทองแดง",0.80,"r"],["แผ่นโลหะบาง",1.20,"s"],["สายกีตาร์โปร่งเส้น 6",1.35,"r"],["ไม้จิ้มฟัน",2.00,"r"]],oi=2,shown=false;
+var sp=document.getElementById('sp'),st=document.getElementById('st'),ob=document.getElementById('ob'),jw=document.getElementById('jw'),r2=document.getElementById('rd2'),ov=document.getElementById('ov'),on=document.getElementById('on'),rv=document.getElementById('rv');
+function showObj(){var o=OBJ[oi],t=o[1],d=Math.max(t*50,4),cur=Math.max(+sp.value,Math.round(t*100)),g=Math.max(cur*0.5,4),x=310-g/2,y=x+g,h='';
+h+='<rect x="60" y="30" width="'+(x-60)+'" height="110" fill="var(--steel)" stroke="var(--line)"/>';
+h+='<rect x="'+y+'" y="65" width="'+(560-y)+'" height="40" fill="var(--steel)" stroke="var(--line)"/>';
+h+=o[2]==='r'?'<circle cx="'+(x+d/2)+'" cy="85" r="'+d/2+'" fill="var(--acc)"/>':'<rect x="'+x+'" y="40" width="'+d+'" height="90" fill="var(--acc)"/>';
+h+='<text class="lbl" x="310" y="162" text-anchor="middle">'+o[0]+'</text>';
+jw.innerHTML=h;scale(r2,cur);st.textContent=cur===Math.round(t*100)?'แกนวัดสัมผัสวัตถุแล้ว: ได้ยินเสียงคลิก หยุดหมุน แล้วอ่านค่าได้':'กำลังหมุนปิด: แกนวัดยังไม่สัมผัสวัตถุ';
+on.textContent=o[0];ov.textContent=shown?t.toFixed(2):'?';rv.textContent=shown?'ซ่อนคำตอบ':'ดูคำตอบ';
+ob.querySelectorAll('button').forEach(function(b,j){b.setAttribute('aria-pressed',j===oi)})}
+OBJ.forEach(function(o,j){var b=document.createElement('button');b.type='button';b.textContent=o[0];b.onclick=function(){oi=j;shown=false;sp.value=300;showObj()};ob.appendChild(b)});
+rv.onclick=function(){shown=!shown;showObj()};sp.oninput=showObj;
+showObj();
+
+var secs=document.querySelectorAll('section'),cur=0,dots=document.getElementById('dots');
+secs.forEach(function(){dots.appendChild(document.createElement('i'))});
+function go(i){if(i<0||i>=secs.length)return;cur=i;
+secs.forEach(function(s,j){s.classList.toggle('on',j===i)});
+dots.querySelectorAll('i').forEach(function(d,j){d.classList.toggle('on',j===i)});
+document.getElementById('cap').textContent=NAR[i];
+document.getElementById('pv').disabled=i===0;document.getElementById('nx').disabled=i===secs.length-1;
+if(window.speechSynthesis)speechSynthesis.cancel();window.scrollTo(0,0)}
+document.getElementById('pv').onclick=function(){go(cur-1)};
+document.getElementById('nx').onclick=function(){go(cur+1)};
+document.addEventListener('keydown',function(e){if(e.target.tagName==='INPUT')return;if(e.key==='ArrowRight')go(cur+1);if(e.key==='ArrowLeft')go(cur-1)});
+document.getElementById('tts').onclick=function(){
+if(!window.speechSynthesis)return;speechSynthesis.cancel();
+var u=new SpeechSynthesisUtterance(NAR[cur]);u.lang='th-TH';speechSynthesis.speak(u)};
+go(0);
+</script>
+</body>
+</html>
